@@ -7,6 +7,6 @@ RUN apt update && \
     git clone https://github.com/stannismahon/react-app.git . && \
     npm install
 
-EXPOSE 80
+EXPOSE 5173
 
 CMD ["npm", "run", "dev"]

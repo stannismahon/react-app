@@ -1,12 +1,19 @@
-FROM node
+FROM node as builder
 
 WORKDIR /app
 
 RUN apt update && \
     apt install git -y && \
     git clone https://github.com/stannismahon/react-app.git . && \
-    npm install
+    npm install && \
+    npm run build
 
-EXPOSE 3000
+FROM nginx:alpine as production
 
-CMD ["npm", "run", "dev"]
+ENV NODE_ENV=production
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
